@@ -1,0 +1,26 @@
+{% if template contains 'product' %}
+   <meta property="og:type" content="product">
+   <meta property="og:title" content="{{ product.title }}" />
+   <meta property="og:category" content="{{ product.type }}" />	
+   {% for image in product.images limit:3 %}
+   <meta property="og:image" content="http:{{ image.src | product_img_url: 'master' }}">
+   <meta property="og:image:secure_url" content="https:{{ image.src | product_img_url: 'master' }}">
+   {% endfor %}
+    <meta property="og:price:amount" content="{{ product.price | money_without_currency | stip_html | escape | remove: ',' }}">
+    <meta property="og:price:currency" content="{{ shop.currency }}">
+    <meta property="og:availability" content="{% if product.available %}instock{% else %}oos{% endif %}" />
+    <meta property="og:description" content="{{ product.description | strip_newlines | strip_html | truncate: 300 | escape }}">
+
+{% elsif template contains 'collection' %}
+   <meta property="og:type" content="collection">
+   <meta property="og:title" content="{{collection.title}}" />
+   <meta property="og:image" content="http:{{ collection.image.src | collection_img_url: 'master' }}">
+   <meta property="og:image:secure_url" content="https:{{ collection.image.src | collection_img_url: 'master' }}">
+    <meta property="og:description" content="{{collection.description}}">
+{% else %}
+
+    <meta property="og:title" content="Dealer de sourire" />
+    <meta property="og:description" content="Avec la livraison et retours gratuits, découvrez la mode en ligne avec Dealer de sourire. Un nouveau visuel chaque jour." />
+    <meta property="og:image" content="https://cdn.shopify.com/s/files/1/1908/0627/files/logo-dds.png?4557111799456427287" />
+
+{% endif %}
